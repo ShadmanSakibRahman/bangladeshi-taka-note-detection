@@ -13,7 +13,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy requirements first (Docker caches this layer)
 COPY requirements.txt .
 
-# Install Python dependencies
+# Install PyTorch CPU-only version first (much smaller than GPU version)
+RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+# Install remaining dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy model weights and source code
